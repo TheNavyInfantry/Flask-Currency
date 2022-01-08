@@ -8,13 +8,15 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     try:
-        r = requests.get("https://api.exchangerate-api.com/v4/latest/TRY")
-        data = r.json()
-        # data_dumps = json.dumps(data, indent=3)
-        data_get_base = data.get("base")
-        data_get_rates = data.get("rates")
+        url = 'https://freecurrencyapi.net/api/v2/latest&base_currency=TRY'
 
-        return render_template("index.html", base=data_get_base, rates=data_get_rates)
+        req = requests.get(url).text
+        req_loads = json.loads(req)
+
+        get_base = req_loads.get("query").get("base_currency")
+        get_data = req_loads.get('data')
+
+        return render_template("index.html", base=get_base, data=get_data)
 
     except HTTPError as http_err:
 
@@ -26,4 +28,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
