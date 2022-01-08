@@ -19,7 +19,17 @@ def index():
         get_base = req_loads.get("query").get("base_currency")
         get_data = req_loads.get('data')
 
-        return render_template("index.html", base=get_base, data=get_data)
+        compare_list = ['USD','EUR','HUF','CHF','SEK']
+
+        match_pair = dict()
+        try_rate = get_data.get("TRY")
+
+        for key in get_data:
+            for each in compare_list:
+                if key == each:
+                    match_pair[key] = get_data[key]
+
+        return render_template("index.html", base=get_base, rates=match_pair, try_rate=try_rate)
 
     except HTTPError as http_err:
 
