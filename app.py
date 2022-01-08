@@ -19,14 +19,16 @@ def index():
         get_base = req_loads.get("query").get("base_currency")
         get_data = req_loads.get('data')
 
-        compare_list = ['USD','EUR','HUF','CHF','SEK']
+        compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK']
 
         match_pair = dict()
-        try_rate = get_data.get("TRY")
+        try_rate = dict()
 
         for key in get_data:
             for each in compare_list:
-                if key == each:
+                if key == each and key == "TRY":
+                    try_rate[key] = get_data[key]
+                elif key == each:
                     match_pair[key] = get_data[key]
 
         return render_template("index.html", base=get_base, rates=match_pair, try_rate=try_rate)
