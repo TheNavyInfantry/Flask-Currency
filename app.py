@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, yaml, os
 from requests.exceptions import HTTPError
 from flask import Flask
 from flask import render_template
@@ -8,9 +8,12 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     try:
-        url = 'https://freecurrencyapi.net/api/v2/latest&base_currency=TRY'
+        stream = open(os.getcwd() + "/config.yml", 'r')
+        config = yaml.load(stream, Loader=yaml.FullLoader)
 
-        req = requests.get(url).text
+        set_url_api_key = f'https://freecurrencyapi.net/api/v2/latest?apikey={config["api_key"]}&base_currency=TRY'
+
+        req = requests.get(set_url_api_key).text
         req_loads = json.loads(req)
 
         get_base = req_loads.get("query").get("base_currency")
