@@ -26,7 +26,7 @@ def index():
 
         for key in get_data:
             for each in compare_list:
-                if key == each and key == "TRY":
+                if key == each and key == get_base:
                     try_rate[key] = get_data[key]
                 elif key == each:
                     match_pair[key] = get_data[key]
