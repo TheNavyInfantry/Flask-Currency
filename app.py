@@ -16,8 +16,13 @@ def index():
         req = requests.get(set_url_api_key).text
         req_loads = json.loads(req)
 
+        get_timestamp = req_loads.get("query").get("timestamp")
         get_base = req_loads.get("query").get("base_currency")
         get_data = req_loads.get('data')
+
+        limiter = 2
+        separate_timestamp = ':'.join([str(get_timestamp)[i:i+limiter]
+                                       for i in range(0, (len(str(get_timestamp)) // 3), limiter)])
 
         compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
 
@@ -31,7 +36,7 @@ def index():
                 elif key == each:
                     match_pair[key] = get_data[key]
 
-        return render_template("index.html", match_pair=match_pair, try_rate=try_rate)
+        return render_template("index.html", match_pair=match_pair, try_rate=try_rate, separate_timestamp= separate_timestamp)
 
     except HTTPError as http_err:
 
