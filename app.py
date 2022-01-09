@@ -19,7 +19,7 @@ def index():
         get_base = req_loads.get("query").get("base_currency")
         get_data = req_loads.get('data')
 
-        compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK']
+        compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
 
         match_pair = dict()
         try_rate = dict()
