@@ -13,9 +13,10 @@
     <!-- navbar -->
     <div class="container-lg">
 		<!-- display data -->
-        <div class="row">
+        <div class="row mt-3">
+            <p class="text-center" id="text-neon-orange">Last Update: {{ separate_timestamp }}</p>
             {% for per_curr in match_pair %}
-                <div class="col-md-4 mt-5">
+                <div class="col-md-4 mt-3">
                     {% for per_rate in try_rate %}
                         <table class="table table-bordered text-center" id="text-neon-orange">
                             <tbody>
