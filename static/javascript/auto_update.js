@@ -15,7 +15,7 @@ setInterval(function() {
                       );
                   }
               )
-            }, 1000
+            }, 10000
           );
 
       function updateElement(rate) {
