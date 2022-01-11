@@ -1,3 +1,3 @@
 # Flask-Currency
 
-Flask based Currency Web Application
+This is a Currency Web Application written with Python, Flask and JavaScript.
