@@ -1,8 +1,7 @@
-
 import requests, json, yaml, os
 from requests.exceptions import HTTPError
 from flask import Flask
-from flask import render_template
+from flask import render_template, jsonify
 
 app = Flask(__name__)
 
@@ -51,7 +50,24 @@ def index():
 
 @app.route('/data_json')
 def get_data_json():
-    return 0
+    compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
+
+    match_pair = dict()
+    try_rate = dict()
+
+    req = do_request()
+    get_base = req.get("query").get("base_currency")
+    get_data = req.get('data')
+
+    for key in get_data:
+        for each in compare_list:
+            if key == each and key == get_base:
+                try_rate[key] = get_data[key]
+            elif key == each:
+                match_pair[key] = get_data[key]
+
+    req['data'] = match_pair
+    return jsonify(req)
 
 if __name__ == '__main__':
     app.run(debug=True)
