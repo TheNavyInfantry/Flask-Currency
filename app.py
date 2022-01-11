@@ -49,6 +49,9 @@ def index():
 
         print(f'Other error occurred: {err}')
 
+@app.route('/data_json')
+def get_data_json():
+    return 0
 
 if __name__ == '__main__':
     app.run(debug=True)
