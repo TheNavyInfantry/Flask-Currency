@@ -38,7 +38,7 @@ def index():
                 elif key == each:
                     match_pair[key] = get_data[key]
 
-        return render_template("index.html", match_pair=match_pair, try_rate=try_rate, set_timestamp=set_timestamp)
+        return render_template("display.html", match_pair=match_pair, try_rate=try_rate, set_timestamp=set_timestamp)
 
     except HTTPError as http_err:
 
