@@ -14,6 +14,8 @@ def do_request():
 
     req = requests.get(set_url_api_key).json()
 
+    req["query"].pop('apikey', None)
+
     return req
 
 def do_parsing():
