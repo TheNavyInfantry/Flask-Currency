@@ -16,29 +16,36 @@ def do_request():
 
     return req
 
+def do_parsing():
+    req = do_request()
+    get_base = req.get("query").get("base_currency")
+    get_data = req.get('data')
+    get_timestamp = req.get("query").get("timestamp")
+
+    compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
+
+    match_pair = dict()
+    try_rate = dict()
+
+    for key in get_data:
+        for each in compare_list:
+            if key == each and key == get_base:
+                try_rate[key] = get_data[key]
+            elif key == each:
+                match_pair[key] = get_data[key]
+
+    ts = int(get_timestamp)
+    timestamp = datetime.fromtimestamp(ts).strftime('%H:%M - %d/%m/%-Y')
+
+    return match_pair,try_rate,timestamp
+
 @app.route('/')
 def index():
     try:
-        get_timestamp = do_request().get("query").get("timestamp")
-        get_base = do_request().get("query").get("base_currency")
-        get_data = do_request().get('data')
 
-        ts = int(get_timestamp)
-        set_timestamp = datetime.fromtimestamp(ts).strftime('%H:%M - %d/%m/%-Y')
+        match_pair, try_rate, timestamp = do_parsing()
 
-        compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
-
-        match_pair = dict()
-        try_rate = dict()
-
-        for key in get_data:
-            for each in compare_list:
-                if key == each and key == get_base:
-                    try_rate[key] = get_data[key]
-                elif key == each:
-                    match_pair[key] = get_data[key]
-
-        return render_template("display.html", match_pair=match_pair, try_rate=try_rate, set_timestamp=set_timestamp)
+        return render_template("display.html", match_pair=match_pair, try_rate=try_rate, timestamp=timestamp)
 
     except HTTPError as http_err:
 
@@ -50,21 +57,6 @@ def index():
 
 @app.route('/data_json')
 def get_data_json():
-    compare_list = ['TRY', 'USD', 'EUR', 'HUF', 'CHF', 'SEK', 'PLN']
-
-    match_pair = dict()
-    try_rate = dict()
-
-    req = do_request()
-    get_base = req.get("query").get("base_currency")
-    get_data = req.get('data')
-
-    for key in get_data:
-        for each in compare_list:
-            if key == each and key == get_base:
-                try_rate[key] = get_data[key]
-            elif key == each:
-                match_pair[key] = get_data[key]
 
     req2 = do_request()
     get_timestamp = req2.get("query").get("timestamp")
@@ -73,7 +65,7 @@ def get_data_json():
     set_timestamp = datetime.fromtimestamp(ts).strftime('%H:%M - %d/%m/%-Y')
     req2["query"]["timestamp"] = set_timestamp
 
-    req2['data'] = match_pair
+    req2['data'] = do_parsing()
     return jsonify(req2)
 
 if __name__ == '__main__':
