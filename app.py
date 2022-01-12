@@ -51,11 +51,11 @@ def index():
 
     except HTTPError as http_err:
 
-        print(f'HTTP error occurred: {http_err}')
+        return f'HTTP error occurred: {http_err}'
 
     except Exception as err:
 
-        print(f'Other error occurred: {err}')
+        return f'Other error occurred: {err}'
 
 @app.route('/data_json')
 def get_data_json():
