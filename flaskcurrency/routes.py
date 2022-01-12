@@ -3,9 +3,11 @@ import requests, json, yaml, os
 from datetime import datetime
 from requests.exceptions import HTTPError
 from flask import Flask, render_template, jsonify
+from pathlib import Path
 
 def do_request():
-    stream = open(os.getcwd() + "/config.yml", 'r')
+    path_ = Path(__file__).resolve()
+    stream = open(path_.parent / "config.yml", 'r')
     config = yaml.load(stream, Loader=yaml.FullLoader)
 
     set_url_api_key = f'https://freecurrencyapi.net/api/v2/latest?apikey={config["api_key"]}&base_currency=TRY'
@@ -51,9 +53,9 @@ def index():
 
         return f'HTTP error occurred: {http_err}'
 
-    except Exception as err:
-
-        return f'Other error occurred: {err}'
+    # except Exception as err:
+    #
+    #     return f'Other error occurred: {err}'
 
 @app.route('/data_json')
 def get_data_json():
